@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacktoberfest Issue Tracker & Contributor Dashboard</title>
+  <meta name="description" content="Discover beginner-friendly open-source issues, track your Hacktoberfest PR milestone progress, and accelerate contributions with GitHub Copilot prompt templates.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Hacktoberfest <span>Tracker</span></h1>
+          <span class="badge badge-accent">AI Copilot Powered</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="tab-btn active" id="tab-issues" onclick="switchTab('issues')">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          Explore Issues
+        </button>
+        <button class="tab-btn" id="tab-tracker" onclick="switchTab('tracker')">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+          PR Milestone
+        </button>
+        <button class="tab-btn" id="tab-prompts" onclick="switchTab('prompts')">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Copilot Studio
+        </button>
+        <button class="tab-btn" id="tab-saved" onclick="switchTab('saved')">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+          Bookmarks (<span id="bookmark-count">0</span>)
+        </button>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://github.com/farhanmallik05/hacktoberfest-issue-tracker" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" id="repo-link-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub Repo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- VIEW 1: Issues Explorer -->
+    <section id="view-issues" class="view-section active">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="hero-tag">Global Hack Week · Hacktoberfest Edition</span>
+          <h2>Discover High-Impact Open Source Issues</h2>
+          <p>Find vetted, beginner-friendly issues tagged for Hacktoberfest. Use GitHub Copilot prompts to understand codebases, formulate solutions, and submit clean pull requests.</p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number" id="stats-total">42+</span>
+            <span class="stat-label">Verified Issues</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="stats-languages">12</span>
+            <span class="stat-label">Languages</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4 / 4</span>
+            <span class="stat-label">Target Milestone</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter & Search Controls -->
+      <div class="controls-card">
+        <div class="search-row">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="search-input" placeholder="Search by topic, keyword, or repo (e.g., CLI, docs, fastapi, react)...">
+            <button id="clear-search-btn" class="clear-btn" onclick="clearSearch()" title="Clear search">&times;</button>
+          </div>
+          <button class="btn btn-primary" id="search-btn" onclick="handleSearch()">
+            Search GitHub
+          </button>
+        </div>
+
+        <div class="filters-row">
+          <div class="filter-group">
+            <label for="filter-language">Language:</label>
+            <select id="filter-language" onchange="applyFilters()">
+              <option value="all">All Languages</option>
+              <option value="python">Python</option>
+              <option value="javascript">JavaScript</option>
+              <option value="typescript">TypeScript</option>
+              <option value="go">Go</option>
+              <option value="rust">Rust</option>
+              <option value="java">Java</option>
+              <option value="html">HTML / CSS</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-label">Label:</label>
+            <select id="filter-label" onchange="applyFilters()">
+              <option value="all">All Labels</option>
+              <option value="good-first-issue">good first issue</option>
+              <option value="hacktoberfest">hacktoberfest</option>
+              <option value="help-wanted">help wanted</option>
+              <option value="documentation">documentation</option>
+              <option value="bug">bug</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-sort">Sort By:</label>
+            <select id="filter-sort" onchange="applyFilters()">
+              <option value="newest">Recently Created</option>
+              <option value="comments">Most Discussed</option>
+              <option value="updated">Recently Updated</option>
+            </select>
+          </div>
+
+          <div class="filter-status">
+            <span class="live-indicator"></span>
+            <span id="api-status-text">GitHub Live Sync</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Language Chips -->
+      <div class="chips-container" id="language-chips">
+        <button class="chip active" data-lang="all" onclick="selectChip('all')">✨ All</button>
+        <button class="chip" data-lang="python" onclick="selectChip('python')">🐍 Python</button>
+        <button class="chip" data-lang="javascript" onclick="selectChip('javascript')">⚡ JavaScript</button>
+        <button class="chip" data-lang="typescript" onclick="selectChip('typescript')">🔷 TypeScript</button>
+        <button class="chip" data-lang="go" onclick="selectChip('go')">🐹 Go</button>
+        <button class="chip" data-lang="rust" onclick="selectChip('rust')">🦀 Rust</button>
+      </div>
+
+      <!-- Issue Grid Section -->
+      <div class="issues-grid-header">
+        <h3 id="results-count-text">Showing Curated Issues</h3>
+        <div class="grid-actions">
+          <button class="btn btn-ghost btn-sm" onclick="fetchLiveIssues()">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <div id="issues-container" class="issues-grid">
+        <!-- Rendered dynamically -->
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+          <p>Loading Hacktoberfest issues...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: Contributor Milestone Tracker -->
+    <section id="view-tracker" class="view-section">
+      <div class="section-header">
+        <h2>Hacktoberfest Contributor Milestone</h2>
+        <p>Enter your GitHub username to track your public Pull Requests created during Hacktoberfest. Reach 4 PRs to complete the challenge!</p>
+      </div>
+
+      <div class="tracker-input-card">
+        <div class="tracker-input-row">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <input type="text" id="username-input" placeholder="Enter your GitHub username (e.g., farhanmallik05)..." value="farhanmallik05">
+          </div>
+          <button class="btn btn-primary" id="track-btn" onclick="trackUserPRs()">
+            Analyze PRs
+          </button>
+        </div>
+      </div>
+
+      <div id="tracker-results" class="tracker-results">
+        <div class="milestone-card">
+          <div class="milestone-progress-header">
+            <div class="milestone-avatar-info">
+              <img id="tracker-avatar" src="https://github.com/farhanmallik05.png" alt="Avatar" class="avatar-img">
+              <div>
+                <h3 id="tracker-user-name">farhanmallik05</h3>
+                <span class="user-handle" id="tracker-user-handle">@farhanmallik05</span>
+              </div>
+            </div>
+            <div class="milestone-status-badge" id="milestone-status">
+              3 / 4 PRs Completed
+            </div>
+          </div>
+
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar-fill" style="width: 75%;"></div>
+          </div>
+          <div class="milestone-steps">
+            <div class="step-point completed" id="step-1">
+              <span class="dot"></span>
+              <span class="label">PR 1: Getting Started</span>
+            </div>
+            <div class="step-point completed" id="step-2">
+              <span class="dot"></span>
+              <span class="label">PR 2: Repo Management</span>
+            </div>
+            <div class="step-point completed" id="step-3">
+              <span class="dot"></span>
+              <span class="label">PR 3: Codespaces</span>
+            </div>
+            <div class="step-point" id="step-4">
+              <span class="dot"></span>
+              <span class="label">PR 4: Copilot Challenge</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pr-list-card">
+          <h3>Recent Hacktoberfest Pull Requests</h3>
+          <div id="pr-list-container" class="pr-list">
+            <!-- Dynamic PR items -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: Copilot Prompt Studio -->
+    <section id="view-prompts" class="view-section">
+      <div class="section-header">
+        <h2>GitHub Copilot Prompt Studio</h2>
+        <p>Curated prompts to supercharge your open-source journey. Learn how we prompted GitHub Copilot to architect, write, and test this very application!</p>
+      </div>
+
+      <div class="prompts-grid">
+        <div class="prompt-card">
+          <div class="prompt-header">
+            <span class="badge badge-accent">1. Codebase Exploration</span>
+            <button class="copy-btn" onclick="copyPromptText('prompt-1')">Copy Prompt</button>
+          </div>
+          <h4>Understand an Open-Source Codebase Fast</h4>
+          <p class="prompt-description">Feed this into Copilot Chat to unpack an unfamiliar repository in minutes:</p>
+          <pre class="prompt-code" id="prompt-1">Explain the architecture of this repository. What is the entry point, how is state managed, and what are the main data flow pipelines? Give me a 3-bullet summary suitable for a new contributor.</pre>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-header">
+            <span class="badge badge-cyan">2. Issue Root-Cause</span>
+            <button class="copy-btn" onclick="copyPromptText('prompt-2')">Copy Prompt</button>
+          </div>
+          <h4>Diagnose Bug & Plan the Fix</h4>
+          <p class="prompt-description">Give Copilot the issue description and file paths to propose minimal surgical changes:</p>
+          <pre class="prompt-code" id="prompt-2">Here is the issue: [PASTE ISSUE BODY]. Looking at [FILE_PATH], diagnose why this error occurs and provide a minimal, non-breaking fix with validation steps.</pre>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-header">
+            <span class="badge badge-emerald">3. Unit Test Generation</span>
+            <button class="copy-btn" onclick="copyPromptText('prompt-3')">Copy Prompt</button>
+          </div>
+          <h4>Write Robust Arrange-Act-Assert Tests</h4>
+          <p class="prompt-description">Generate comprehensive test cases covering edge cases and regressions:</p>
+          <pre class="prompt-code" id="prompt-3">Generate a unit test suite for the function [FUNCTION_NAME] in [FILE_NAME]. Use pytest/jest conventions, mock external HTTP requests, and include assertions for happy path, 400 bad request, and 404 not found.</pre>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-header">
+            <span class="badge badge-purple">4. Pull Request Summarizer</span>
+            <button class="copy-btn" onclick="copyPromptText('prompt-4')">Copy Prompt</button>
+          </div>
+          <h4>Draft Conventional PR Description</h4>
+          <p class="prompt-description">Turn git diffs into maintainer-friendly PR descriptions ready for merge:</p>
+          <pre class="prompt-code" id="prompt-4">Summarize my recent git changes into a polished Pull Request description. Include: 1) What problem was solved, 2) Key changes made as bullet points, 3) How maintainers can verify the fix, and 4) Closes #[ISSUE_NUMBER].</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: Bookmarks -->
+    <section id="view-saved" class="view-section">
+      <div class="section-header">
+        <h2>Bookmarked Issues</h2>
+        <p>Issues you have saved for later review or contribution during Hacktoberfest.</p>
+      </div>
+      <div id="saved-container" class="issues-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal for Copilot Issue Prompt Generator -->
+  <div id="prompt-modal" class="modal-backdrop" onclick="closePromptModal(event)">
+    <div class="modal-dialog" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <h3>Copilot Solution Prompt</h3>
+        </div>
+        <button class="close-modal-btn" onclick="closePromptModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Copy this prompt directly into <strong>GitHub Copilot Chat</strong> in VS Code to generate a working solution for this issue:</p>
+        <div class="generated-prompt-box">
+          <pre id="modal-prompt-content"></pre>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closePromptModal()">Close</button>
+          <button class="btn btn-primary" id="copy-modal-prompt-btn" onclick="copyModalPrompt()">Copy to Clipboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <p>Built with <strong>GitHub Copilot</strong> for MLH Global Hack Week: Hacktoberfest 2026.</p>
+      <div class="footer-links">
+        <a href="https://github.com/farhanmallik05/hacktoberfest-issue-tracker" target="_blank">Repository</a>
+        <span>·</span>
+        <a href="https://hacktoberfest.com" target="_blank">Hacktoberfest Official</a>
+        <span>·</span>
+        <a href="https://mlh.link/ghwHF1026-github-copilot-quickstart" target="_blank">GitHub Copilot Guide</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
