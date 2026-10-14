@@ -22,6 +22,19 @@ The application helps developers discover beginner-friendly issues (`good first 
 
 ---
 
+## 📸 Screenshots
+
+### 1. Issue Explorer & Copilot Integration
+![Issue Explorer](screenshots/screenshot-dashboard.png)
+
+### 2. Hacktoberfest Milestone Tracker
+![Milestone Tracker](screenshots/screenshot-milestone.png)
+
+### 3. Copilot Prompt Studio
+![Copilot Studio](screenshots/screenshot-prompts.png)
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: Semantic HTML5, Vanilla JavaScript (ES6+), Vanilla CSS (Custom Design System, Glassmorphism, Responsive Grid).
