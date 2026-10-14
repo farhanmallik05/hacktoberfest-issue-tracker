@@ -91,6 +91,9 @@ def build_search_query(language=None, label=None, query=None):
 
 def fetch_issues(language=None, label=None, query=None, limit=5):
     """Fetches issues from GitHub Search API with curated fallback."""
+    if limit < 1:
+        raise ValueError("limit must be at least 1")
+
     q_str = build_search_query(language, label, query)
     encoded_q = urllib.parse.quote(q_str)
     url = f"https://api.github.com/search/issues?q={encoded_q}&sort=updated&order=desc&per_page={limit}"
@@ -117,7 +120,7 @@ def fetch_issues(language=None, label=None, query=None, limit=5):
                         "title": item.get("title"),
                         "repo": repo_name,
                         "url": item.get("html_url"),
-                        "language": language or "general",
+                        "language": (language or "general").lower(),
                         "labels": [l.get("name") for l in item.get("labels", [])],
                         "comments": item.get("comments", 0),
                     })
@@ -130,7 +133,7 @@ def fetch_issues(language=None, label=None, query=None, limit=5):
     # Filter curated fallback
     filtered = CURATED_BACKUP_ISSUES
     if language:
-        filtered = [i for i in filtered if i.get("language") == language.lower()]
+        filtered = [i for i in filtered if i.get("language", "").lower() == language.lower()]
     if query:
         filtered = [i for i in filtered if query.lower() in i.get("title", "").lower() or query.lower() in i.get("repo", "").lower()]
 

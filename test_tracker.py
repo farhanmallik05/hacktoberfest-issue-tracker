@@ -4,6 +4,7 @@ Verifies query construction, issue fetching, fallback handling, and Copilot prom
 """
 
 import unittest
+from unittest.mock import patch
 from tracker import build_search_query, fetch_issues, generate_copilot_prompt, track_user_prs
 
 
@@ -33,6 +34,19 @@ class TestTracker(unittest.TestCase):
         self.assertIn("repo", first)
         self.assertIn("url", first)
         self.assertIn("labels", first)
+
+    def test_fetch_issues_fallback_language_is_case_insensitive(self):
+        """Verify fallback filtering matches language names regardless of case."""
+        with patch("tracker.urllib.request.urlopen", side_effect=OSError):
+            issues, source = fetch_issues(language="Python", limit=5)
+        self.assertEqual(source, "Curated Offline Fallback")
+        self.assertTrue(issues)
+        self.assertTrue(all(issue["language"] == "python" for issue in issues))
+
+    def test_fetch_issues_rejects_non_positive_limit(self):
+        """Verify invalid limits fail instead of producing an unexpected slice."""
+        with self.assertRaises(ValueError):
+            fetch_issues(limit=0)
 
     def test_generate_copilot_prompt(self):
         """Verify Copilot prompt format contains key prompt engineering elements."""
